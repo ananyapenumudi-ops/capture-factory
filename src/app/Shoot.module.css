@@ -1,0 +1,239 @@
+.shoot {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 4px var(--gutter) 16px;
+}
+
+.viewfinder {
+  position: relative;
+  overflow: hidden;
+  border: 4px solid var(--ink);
+  border-radius: 22px;
+  background: #111;
+  box-shadow: 0 0 0 6px var(--tangerine), 0 0 0 10px var(--ink);
+  margin: 10px 0 6px;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Mirror the preview so it behaves like a mirror (and matches the saved shot). */
+  transform: scaleX(-1);
+  display: block;
+}
+
+.notice {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  text-align: center;
+  color: var(--cream);
+  font-weight: 600;
+  background: var(--sky);
+}
+
+.notice p {
+  margin: 0;
+  max-width: 34ch;
+  line-height: 1.45;
+}
+
+.count {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 30vw, 11rem);
+  color: var(--butter);
+  -webkit-text-stroke: 4px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 6px 6px 0 var(--ink);
+  animation: pop 0.8s ease-out both;
+  pointer-events: none;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  animation: flash 0.22s ease-out both;
+}
+
+@keyframes flash {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bubblegum);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 2px 12px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.thumbs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.thumbItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.thumb {
+  width: 72px;
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  background: #3a3a3a;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  color: var(--cream);
+  font-weight: 700;
+  transition: transform 0.2s ease;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbActive {
+  border-color: var(--butter);
+  transform: scale(1.08);
+}
+
+.retake {
+  min-height: 36px;
+  border: 2px solid var(--cream);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.controls {
+  margin-top: auto;
+  background: var(--cream);
+  border-radius: 28px 28px 0 0;
+  padding: 20px var(--gutter) calc(20px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.shutter {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 4px solid var(--ink);
+  background: radial-gradient(circle at 50% 50%, var(--bubblegum) 0 52%, var(--cream) 54% 100%);
+  box-shadow: var(--pop-shadow);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.shutter:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.shutter:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.shutter:focus-visible {
+  outline: 3px solid var(--periwinkle);
+  outline-offset: 4px;
+}
+
+.hint {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.reviewActions,
+.secondary {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.secondary :global(.btn) {
+  min-height: 44px;
+  font-size: 0.9rem;
+}
+
+/* Landscape phones: put the viewfinder and the thumbnails side by side. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .stage {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .thumbs {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .thumb {
+    width: 56px;
+  }
+}
