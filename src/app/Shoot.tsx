@@ -81,14 +81,20 @@ export function Shoot() {
   return (
     <div className={styles.shoot}>
       <div className={styles.stage}>
-        <div className={styles.viewfinder} style={{ aspectRatio: `${aspect}`, width: `min(100%, calc(52svh * ${aspect}))` }}>
+        <div className={styles.camera} style={{ width: `min(100%, calc(50svh * ${aspect} + 36px))` }}>
+          <div className={styles.cameraTop} aria-hidden="true">
+            <span className={styles.bulb} data-on={shooting || undefined} />
+            <span className={styles.model}>CAPTURE-400</span>
+            <span className={styles.dial} />
+          </div>
+          <div className={styles.viewfinder} style={{ aspectRatio: `${aspect}` }}>
           <video ref={videoRef} className={styles.video} playsInline muted autoPlay aria-label="Camera preview" />
 
           {status === 'starting' && <div className={styles.notice}>Warming up the camera…</div>}
           {status !== 'ready' && status !== 'starting' && (
             <div className={styles.notice}>
               <p>{CAMERA_MESSAGES[status]}</p>
-              <button className="btn" onClick={retry}>
+              <button className="btn btn-small" onClick={retry}>
                 Try again
               </button>
             </div>
@@ -105,6 +111,7 @@ export function Shoot() {
               Shot {current + 1} of {layout.shots}
             </div>
           )}
+          </div>
         </div>
 
         <ol className={styles.thumbs} aria-label="Your shots">
@@ -114,7 +121,7 @@ export function Shoot() {
                 className={`${styles.thumb} ${shooting && current === i ? styles.thumbActive : ''}`}
                 style={{ aspectRatio: `${aspect}` }}
               >
-                {s ? <img src={s.url} alt={`Shot ${i + 1}`} /> : <span>{i + 1}</span>}
+                {s ? <img key={s.id} src={s.url} alt={`Shot ${i + 1}`} /> : <span>{i + 1}</span>}
               </div>
               {phase === 'review' && s && cameraOk && (
                 <button className={styles.retake} onClick={() => shoot([i])} aria-label={`Retake shot ${i + 1}`}>
@@ -142,11 +149,11 @@ export function Shoot() {
 
         {phase === 'review' && (
           <div className={styles.reviewActions}>
-            <button className="btn btn-primary" onClick={() => go('result')} disabled={!allTaken}>
-              Print my strip 🎟️
+            <button className="btn btn-red" onClick={() => go('decorate')} disabled={!allTaken}>
+              Decorate →
             </button>
             <button
-              className="btn btn-quiet"
+              className="btn"
               onClick={() => {
                 clearShots()
                 setPhase('ready')
@@ -159,10 +166,10 @@ export function Shoot() {
 
         {!shooting && (
           <div className={styles.secondary}>
-            <button className="btn btn-quiet" onClick={() => go('setup')}>
+            <button className="btn btn-small" onClick={() => go('setup')}>
               ← Layout
             </button>
-            <label className="btn btn-quiet">
+            <label className="btn btn-small">
               Upload photos
               <input
                 type="file"

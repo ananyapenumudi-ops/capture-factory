@@ -1,20 +1,47 @@
 import { create } from 'zustand'
 import { getLayout, type LayoutId } from '../booth/layouts'
+import type { FilterId } from '../decorate/filters'
+import type { FrameId } from '../decorate/frames'
 
-export type Step = 'landing' | 'setup' | 'shoot' | 'result'
+export type Step = 'landing' | 'setup' | 'shoot' | 'decorate' | 'result'
 
 export type Shot = { id: string; blob: Blob; url: string }
+
+/** A sticker or caption placed on the strip. x/y is its centre, in strip pixels. */
+export type Item = {
+  id: string
+  kind: 'sticker' | 'text'
+  stickerId?: string
+  text?: string
+  font?: string
+  color?: string
+  x: number
+  y: number
+  rotation: number
+  scale: number
+  flipX: boolean
+}
+
+export type Print = { blob: Blob; url: string }
 
 type SessionState = {
   step: Step
   layoutId: LayoutId
+  frameId: FrameId
+  filterId: FilterId
   shots: (Shot | null)[]
+  items: Item[]
+  print: Print | null
   serial: string
   muted: boolean
   go: (step: Step) => void
   chooseLayout: (id: LayoutId) => void
+  setFrame: (id: FrameId) => void
+  setFilter: (id: FilterId) => void
   setShot: (index: number, blob: Blob) => void
-  /** Clears the shots and issues a new ticket serial. */
+  setItems: (items: Item[]) => void
+  setPrint: (blob: Blob) => void
+  /** Clears shots, stickers and the print, and issues a new ticket serial. */
   newSession: () => void
   clearShots: () => void
   toggleMute: () => void
@@ -48,16 +75,28 @@ function revokeAll(shots: (Shot | null)[]) {
 export const useSession = create<SessionState>((set, get) => ({
   step: 'landing',
   layoutId: 'strip4',
+  frameId: 'dossier',
+  filterId: 'none',
   shots: emptyShots('strip4'),
+  items: [],
+  print: null,
   serial: makeSerial(),
   muted: readMuted(),
 
-  go: (step) => set({ step }),
+  go: (step) => {
+    window.scrollTo({ top: 0 })
+    set({ step })
+  },
 
   chooseLayout: (layoutId) => {
+    if (layoutId === get().layoutId) return
     revokeAll(get().shots)
-    set({ layoutId, shots: emptyShots(layoutId) })
+    // Sticker positions are in strip pixels, so they do not carry across layouts.
+    set({ layoutId, shots: emptyShots(layoutId), items: [] })
   },
+
+  setFrame: (frameId) => set({ frameId }),
+  setFilter: (filterId) => set({ filterId }),
 
   setShot: (index, blob) => {
     const shots = [...get().shots]
@@ -67,9 +106,19 @@ export const useSession = create<SessionState>((set, get) => ({
     set({ shots })
   },
 
+  setItems: (items) => set({ items }),
+
+  setPrint: (blob) => {
+    const old = get().print
+    if (old) URL.revokeObjectURL(old.url)
+    set({ print: { blob, url: URL.createObjectURL(blob) } })
+  },
+
   newSession: () => {
-    revokeAll(get().shots)
-    set({ shots: emptyShots(get().layoutId), serial: makeSerial() })
+    const { shots, print, layoutId } = get()
+    revokeAll(shots)
+    if (print) URL.revokeObjectURL(print.url)
+    set({ shots: emptyShots(layoutId), items: [], print: null, serial: makeSerial() })
   },
 
   clearShots: () => {

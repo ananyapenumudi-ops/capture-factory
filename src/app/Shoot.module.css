@@ -8,18 +8,82 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 4px var(--gutter) 16px;
+  gap: 14px;
+  padding: 4px var(--gutter) 18px;
+}
+
+/* A vintage camera body wrapped around the live preview. */
+.camera {
+  max-width: 100%;
+  padding: 0 18px 18px;
+  border: var(--line);
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08) 0 2px, transparent 2px 5px),
+    linear-gradient(#3f3a37, #2b2522);
+  box-shadow: var(--lift);
+}
+
+.cameraTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+}
+
+.bulb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #5a2224;
+  border: 2px solid var(--ink);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bulb[data-on] {
+  background: #ff4b4b;
+  box-shadow: 0 0 12px #ff4b4b;
+  animation: blink 0.8s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    background: #5a2224;
+    box-shadow: none;
+  }
+}
+
+.model {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--tan);
+}
+
+.dial {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(#bdb6ad 0 10deg, #8d8780 10deg 20deg);
+  border: 2px solid var(--ink);
+  animation: spin 12s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .viewfinder {
   position: relative;
+  width: 100%;
   overflow: hidden;
-  border: 4px solid var(--ink);
-  border-radius: 22px;
+  border: 3px solid var(--ink);
+  border-radius: 8px;
   background: #111;
-  box-shadow: 0 0 0 6px var(--tangerine), 0 0 0 10px var(--ink);
-  margin: 10px 0 6px;
+  box-shadow: inset 0 0 0 2px #555;
 }
 
 .video {
@@ -41,15 +105,16 @@
   gap: 12px;
   padding: 20px;
   text-align: center;
-  color: var(--cream);
-  font-weight: 600;
-  background: var(--sky);
+  color: var(--paper);
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: var(--charcoal);
 }
 
 .notice p {
   margin: 0;
   max-width: 34ch;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .count {
@@ -58,26 +123,27 @@
   display: grid;
   place-items: center;
   font-family: var(--font-display);
+  font-weight: 900;
   font-size: clamp(6rem, 30vw, 11rem);
-  color: var(--butter);
-  -webkit-text-stroke: 4px var(--ink);
+  color: var(--paper);
+  -webkit-text-stroke: 3px var(--ink);
   paint-order: stroke fill;
-  text-shadow: 6px 6px 0 var(--ink);
+  text-shadow: 5px 5px 0 var(--red);
   animation: pop 0.8s ease-out both;
   pointer-events: none;
 }
 
 @keyframes pop {
   0% {
-    transform: scale(1.6);
+    transform: scale(1.8) rotate(-12deg);
     opacity: 0;
   }
   25% {
-    transform: scale(1);
+    transform: scale(1) rotate(-4deg);
     opacity: 1;
   }
   100% {
-    transform: scale(0.85);
+    transform: scale(0.85) rotate(0deg);
     opacity: 0.9;
   }
 }
@@ -103,21 +169,23 @@
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--bubblegum);
+  background: var(--paper);
   border: 2px solid var(--ink);
-  border-radius: 999px;
   padding: 2px 12px;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
+/* Contact sheet of mini polaroids. */
 .thumbs {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -130,61 +198,93 @@
 }
 
 .thumb {
-  width: 72px;
-  border: 3px solid var(--ink);
-  border-radius: 10px;
-  background: #3a3a3a;
-  overflow: hidden;
+  width: 76px;
+  padding: 4px 4px 12px;
+  background: #fffdf6;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.35);
   display: grid;
   place-items: center;
-  color: var(--cream);
+  color: var(--ink);
   font-weight: 700;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
+}
+
+.thumbItem:nth-child(odd) .thumb {
+  transform: rotate(-3deg);
+}
+
+.thumbItem:nth-child(even) .thumb {
+  transform: rotate(2deg);
+}
+
+.thumb span {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: var(--paper-aged);
 }
 
 .thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  animation: develop 1.4s ease-out both;
+}
+
+@keyframes develop {
+  from {
+    filter: sepia(1) brightness(1.8) contrast(0.5);
+    transform: scale(1.1);
+  }
 }
 
 .thumbActive {
-  border-color: var(--butter);
-  transform: scale(1.08);
+  transform: scale(1.12) rotate(0deg) !important;
+  box-shadow: 0 0 0 3px var(--red), 2px 3px 0 rgba(0, 0, 0, 0.35);
 }
 
 .retake {
   min-height: 36px;
-  border: 2px solid var(--cream);
-  border-radius: 999px;
+  border: 2px solid var(--paper);
+  border-radius: 4px;
   background: transparent;
-  color: var(--cream);
-  font-size: 0.78rem;
-  font-weight: 600;
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
   padding: 4px 10px;
   cursor: pointer;
 }
 
 .controls {
   margin-top: auto;
-  background: var(--cream);
-  border-radius: 28px 28px 0 0;
+  background-color: var(--paper);
+  background-image: var(--grain);
+  border-top: var(--line);
   padding: 20px var(--gutter) calc(20px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .shutter {
-  width: 84px;
-  height: 84px;
+  width: 86px;
+  height: 86px;
   border-radius: 50%;
   border: 4px solid var(--ink);
-  background: radial-gradient(circle at 50% 50%, var(--bubblegum) 0 52%, var(--cream) 54% 100%);
-  box-shadow: var(--pop-shadow);
+  background: radial-gradient(circle at 40% 35%, #ff6a6a 0 10%, var(--red) 30% 52%, #bdb6ad 54% 100%);
+  box-shadow: var(--drop);
   cursor: pointer;
   transition: transform 0.12s ease;
+  animation: ready 2.4s ease-in-out infinite;
+}
+
+@keyframes ready {
+  50% {
+    box-shadow: 0 0 0 10px rgba(200, 40, 46, 0.15), var(--drop);
+  }
 }
 
 .shutter:active:not(:disabled) {
@@ -194,17 +294,18 @@
 .shutter:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+  animation: none;
 }
 
 .shutter:focus-visible {
-  outline: 3px solid var(--periwinkle);
+  outline: 3px solid var(--mustard);
   outline-offset: 4px;
 }
 
 .hint {
   margin: 0;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 0.85rem;
   text-align: center;
 }
 
@@ -216,12 +317,7 @@
   justify-content: center;
 }
 
-.secondary :global(.btn) {
-  min-height: 44px;
-  font-size: 0.9rem;
-}
-
-/* Landscape phones: put the viewfinder and the thumbnails side by side. */
+/* Landscape phones: viewfinder and contact sheet side by side. */
 @media (orientation: landscape) and (max-height: 520px) {
   .stage {
     flex-direction: row;

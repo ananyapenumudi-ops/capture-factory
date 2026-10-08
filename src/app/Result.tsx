@@ -1,38 +1,56 @@
-import { useEffect, useState } from 'react'
+import { useMemo, type CSSProperties } from 'react'
 import { getLayout } from '../booth/layouts'
-import { renderStrip } from '../export/renderStrip'
-import { useSession, type Shot } from '../store/session'
+import { seeded } from '../decorate/frames'
+import { useSession } from '../store/session'
 import styles from './Result.module.css'
 
-type Print = { blob: Blob; url: string }
+const CONFETTI_COLORS = ['#C8282E', '#F4ECD8', '#D9A441', '#E9A3B0', '#3B4F8F', '#9DAE8E']
+
+/** Little paper scraps that burst out when the strip lands. */
+function Confetti() {
+  const pieces = useMemo(() => {
+    const rand = seeded(42)
+    return Array.from({ length: 36 }, (_, i) => ({
+      x: (rand() - 0.5) * 520,
+      y: -(rand() * 280 + 80),
+      r: rand() * 720 - 360,
+      w: rand() * 8 + 6,
+      h: rand() * 10 + 8,
+      c: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+      d: rand() * 0.3,
+    }))
+  }, [])
+  return (
+    <div className={styles.confetti} aria-hidden="true">
+      {pieces.map((p, i) => (
+        <span
+          key={i}
+          style={
+            {
+              '--x': `${p.x}px`,
+              '--y': `${p.y}px`,
+              '--rot': `${p.r}deg`,
+              width: p.w,
+              height: p.h,
+              background: p.c,
+              animationDelay: `${2.3 + p.d}s`,
+            } as CSSProperties
+          }
+        />
+      ))}
+    </div>
+  )
+}
 
 export function Result() {
   const layout = getLayout(useSession((s) => s.layoutId))
-  const shots = useSession((s) => s.shots)
+  const print = useSession((s) => s.print)
   const serial = useSession((s) => s.serial)
   const go = useSession((s) => s.go)
   const newSession = useSession((s) => s.newSession)
-  const [print, setPrint] = useState<Print | null>(null)
-  const [failed, setFailed] = useState(false)
-
-  useEffect(() => {
-    let alive = true
-    let made: string | null = null
-    renderStrip(layout, shots as Shot[], serial)
-      .then((blob) => {
-        if (!alive) return
-        made = URL.createObjectURL(blob)
-        setPrint({ blob, url: made })
-      })
-      .catch(() => alive && setFailed(true))
-    return () => {
-      alive = false
-      if (made) URL.revokeObjectURL(made)
-    }
-  }, [layout, shots, serial])
 
   const filename = `capture-factory-${serial}.png`
-  const file = print ? new File([print.blob], filename, { type: 'image/png' }) : null
+  const file = useMemo(() => (print ? new File([print.blob], filename, { type: 'image/png' }) : null), [print, filename])
   const canShare = !!file && typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] })
 
   async function share() {
@@ -40,44 +58,60 @@ export function Result() {
     try {
       await navigator.share({ files: [file], title: 'My Capture Factory strip' })
     } catch {
-      // The user closed the share sheet; nothing to do.
+      // The share sheet was closed; nothing to do.
     }
+  }
+
+  if (!print) {
+    return (
+      <div className={styles.result}>
+        <p className={styles.empty}>Nothing in the tray yet.</p>
+        <button className="btn btn-red" onClick={() => go('decorate')}>
+          Back to decorating
+        </button>
+      </div>
+    )
   }
 
   return (
     <div className={styles.result}>
       <div className={styles.printer}>
-        <div className={styles.slot} aria-hidden="true" />
-        <div className={styles.paper}>
-          {print ? (
-            <img
-              className={styles.strip}
-              src={print.url}
-              alt={`Your ${layout.name.toLowerCase()} photo strip, ticket number ${serial}`}
-            />
-          ) : (
-            <p className={styles.developing}>{failed ? 'The printer jammed. Try again?' : 'Developing…'}</p>
-          )}
+        <div className={styles.mouth} aria-hidden="true">
+          <span className={styles.light} />
+          <span className="label">Output tray</span>
+          <span className={styles.light} />
         </div>
+        <div className={styles.paper}>
+          <div className={styles.stripWrap}>
+            <img className={styles.strip} src={print.url} alt={`Your ${layout.name.toLowerCase()} photo strip, ticket number ${serial}`} />
+            <span className={styles.developed} aria-hidden="true">
+              Developed
+            </span>
+          </div>
+        </div>
+        <Confetti />
       </div>
 
       <div className={styles.actions}>
-        {print && canShare && (
-          <button className="btn btn-pink" onClick={share}>
-            Share or save 📲
-          </button>
-        )}
-        {print && (
-          <a className={`btn ${canShare ? '' : 'btn-primary'}`} href={print.url} download={filename}>
-            Download PNG ⬇
-          </a>
-        )}
+        <p className={`label ${styles.receipt}`}>
+          Ticket № {serial} · Ready to take home
+        </p>
         <div className={styles.row}>
-          <button className="btn btn-quiet" onClick={() => go('shoot')}>
-            ← Retake shots
+          {canShare && (
+            <button className="btn btn-dark" onClick={share}>
+              Share / save
+            </button>
+          )}
+          <a className="btn btn-red" href={print.url} download={filename}>
+            Download PNG
+          </a>
+        </div>
+        <div className={styles.row}>
+          <button className="btn btn-small" onClick={() => go('decorate')}>
+            ← Keep decorating
           </button>
           <button
-            className="btn btn-quiet"
+            className="btn btn-small"
             onClick={() => {
               newSession()
               go('setup')

@@ -11,8 +11,10 @@
     "dev:phone": "vite --mode phone"
   },
   "dependencies": {
+    "konva": "^10.7.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-konva": "^19.3.0",
     "zustand": "^5.0.15"
   },
   "devDependencies": {

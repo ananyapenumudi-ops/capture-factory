@@ -3,24 +3,26 @@
   display: flex;
   flex-direction: column;
   padding-bottom: env(safe-area-inset-bottom);
+  overflow-x: clip;
 }
 
 .marquee {
   overflow: hidden;
-  border-bottom: 2px solid #444;
-  background: var(--sky-deep);
-  color: var(--cream);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  background: var(--red);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   white-space: nowrap;
   padding-top: env(safe-area-inset-top);
+  border-bottom: 2px solid var(--ink);
 }
 
 .marqueeTrack {
   display: inline-block;
   padding: 6px 0;
-  animation: scroll 40s linear infinite;
+  animation: scroll 45s linear infinite;
 }
 
 @keyframes scroll {
@@ -33,42 +35,120 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px var(--gutter);
+  padding: 12px var(--gutter);
 }
 
+/* The logo is a little paper label pinned to the desk. */
 .logo {
-  background: none;
-  border: none;
-  padding: 4px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 6px 12px 5px;
+  border: var(--line);
+  background: var(--paper);
+  box-shadow: var(--drop);
   cursor: pointer;
-  color: var(--cream);
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  line-height: 1;
-  transform: rotate(-3deg);
+  transform: rotate(-2deg);
+  transition: transform 0.2s ease;
 }
 
-.logo span {
-  color: var(--bubblegum);
+@media (hover: hover) {
+  .logo:hover {
+    transform: rotate(1deg) scale(1.03);
+  }
+}
+
+.logoMain {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--red);
+  line-height: 1;
+}
+
+.logoSub {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .iconBtn {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 2px solid var(--cream);
-  background: transparent;
+  border: 2px solid var(--paper);
+  background: rgba(0, 0, 0, 0.15);
   font-size: 1.1rem;
   cursor: pointer;
 }
 
 .iconBtn:focus-visible {
-  outline: 3px solid var(--periwinkle);
+  outline: 3px solid var(--mustard);
   outline-offset: 2px;
+}
+
+/* Progress shown as file-folder tabs. */
+.tabs ol {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs li {
+  flex: 1;
+  min-width: max-content;
+  padding: 7px 10px 6px;
+  border-radius: 8px 8px 0 0;
+  background: var(--kraft);
+  color: rgba(244, 236, 216, 0.75);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.tabNum {
+  opacity: 0.7;
+}
+
+.tabDone {
+  background: var(--paper-aged) !important;
+  color: var(--ink) !important;
+}
+
+.tabActive {
+  background: var(--paper) !important;
+  color: var(--red) !important;
+  transform: translateY(-3px);
 }
 
 .main {
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding-top: 12px;
+}
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading {
+  color: var(--paper);
+  font-weight: 700;
+  text-align: center;
+  margin: 80px 0;
 }

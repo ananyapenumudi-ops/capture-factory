@@ -1,25 +1,32 @@
 :root {
-  --sky: #2b2b2b;
-  --sky-deep: #222222;
-  --cream: #f4ebdd;
-  --ink: #1e1e1e;
-  --tangerine: #f5893a;
-  --bubblegum: #ee6fa8;
-  --periwinkle: #7b7fd6;
-  --butter: #f7c948;
+  /* Retro dossier palette: kraft desk, aged paper, ink, stamp red. */
+  --desk: #6b4f3a;
+  --desk-dark: #4a3628;
+  --kraft: #8a6a50;
+  --paper: #f4ecd8;
+  --paper-aged: #e6d6b8;
+  --ink: #2b2522;
+  --charcoal: #3a3634;
+  --red: #c8282e;
+  --tan: #d8b79a;
+  --mustard: #d9a441;
+  --pink: #e9a3b0;
+  --stamp-blue: #3b4f8f;
 
-  --font-display: 'Shrikhand', 'Cooper Black', Georgia, serif;
-  --font-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-mono: 'Courier Prime', 'Courier New', Courier, monospace;
+  --font-hand: 'Homemade Apple', 'Segoe Script', cursive;
 
-  --radius: 18px;
-  --outline: 3px solid var(--ink);
-  --pop-shadow: 4px 4px 0 var(--ink);
-
-  /* Safe-area aware gutters for notched phones. */
   --gutter: max(16px, env(safe-area-inset-left));
+  --line: 2px solid var(--ink);
+  --drop: 4px 5px 0 rgba(30, 20, 12, 0.35);
+  --lift: 0 10px 24px rgba(30, 20, 12, 0.35);
+
+  /* Fine paper grain, generated with SVG noise so there is no image to download. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.08 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   color-scheme: light;
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
@@ -34,7 +41,9 @@
 html,
 body {
   margin: 0;
-  background: var(--sky);
+  background-color: var(--desk);
+  background-image: var(--grain), radial-gradient(ellipse at 50% 0%, #7a5b43 0%, var(--desk) 55%, var(--desk-dark) 100%);
+  background-attachment: fixed;
   overscroll-behavior-y: none;
 }
 
@@ -44,7 +53,8 @@ body {
 
 button,
 input,
-label {
+label,
+select {
   font: inherit;
   touch-action: manipulation;
 }
@@ -55,60 +65,133 @@ img {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1;
+  font-weight: 900;
+  line-height: 1.05;
   margin: 0;
 }
 
-/* Shared chunky "sticker" buttons */
+/* A sheet of aged paper: the base surface for every panel. */
+.paper {
+  background-color: var(--paper);
+  background-image: var(--grain);
+  border: 1px solid rgba(43, 37, 34, 0.25);
+  box-shadow: var(--lift);
+}
+
+/* Typewriter label, e.g. "FILE No. 0042" */
+.label {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Buttons look like stamped paper tags. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 52px;
-  padding: 12px 24px;
-  border: var(--outline);
-  border-radius: 999px;
-  background: var(--cream);
+  min-height: 50px;
+  padding: 10px 22px;
+  border: var(--line);
+  border-radius: 4px;
+  background: var(--paper);
   color: var(--ink);
-  font-weight: 600;
-  font-size: 1rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: var(--pop-shadow);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: var(--drop);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
   user-select: none;
 }
 
-.btn:active {
+@media (hover: hover) {
+  .btn:hover:not(:disabled) {
+    transform: translate(-1px, -2px) rotate(-1deg);
+    box-shadow: 6px 8px 0 rgba(30, 20, 12, 0.35);
+  }
+}
+
+.btn:active:not(:disabled) {
   transform: translate(3px, 3px);
-  box-shadow: 1px 1px 0 var(--ink);
+  box-shadow: 1px 1px 0 rgba(30, 20, 12, 0.35);
 }
 
 .btn:focus-visible {
-  outline: 3px solid var(--periwinkle);
+  outline: 3px solid var(--mustard);
   outline-offset: 3px;
 }
 
 .btn:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
-.btn-primary {
-  background: var(--tangerine);
+.btn-red {
+  background: var(--red);
+  color: var(--paper);
 }
 
-.btn-pink {
-  background: var(--bubblegum);
+.btn-dark {
+  background: var(--charcoal);
+  color: var(--paper);
 }
 
-.btn-quiet {
+.btn-ghost {
   background: transparent;
+  color: var(--paper);
+  border-color: var(--paper);
   box-shadow: none;
+}
+
+.btn-small {
+  min-height: 40px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+}
+
+/* Every screen slides in like a sheet being dealt onto the desk. */
+.screen-enter {
+  animation: deal 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: translateY(28px) rotate(-1.2deg);
+  }
+}
+
+/* A rubber stamp slamming down. */
+@keyframes slam {
+  0% {
+    opacity: 0;
+    transform: scale(2.4) rotate(var(--r, -8deg));
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.92) rotate(var(--r, -8deg));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(var(--r, -8deg));
+  }
+}
+
+/* Gentle idle bob for props lying on the desk. */
+@keyframes bob {
+  50% {
+    transform: translateY(-6px) rotate(calc(var(--r, 0deg) + 1.5deg));
+  }
 }
 
 .visually-hidden {

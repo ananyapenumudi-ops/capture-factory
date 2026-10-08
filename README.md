@@ -6,25 +6,24 @@ Everything happens on your device: photos are never uploaded, and there is no ac
 
 ## Features
 
-**Working now (milestone 1: booth core)**
+- **Retro dossier look**: a kraft-paper desk, a classified file, stamps, tickets and typewriter type, with plenty of motion. Props drop onto the desk and drift with your cursor, text types itself out, stamps slam down, and the strip feeds out of the printer and develops.
+- **Four layouts**: classic 4-shot strip, 3-shot trio, 2×2 grid and a single polaroid.
+- **Shoot**: a vintage camera viewfinder, 3-2-1 countdown, flash and shutter sounds (with a mute toggle), retake any single shot, or upload photos if there is no camera.
+- **Decorate**:
+  - 40 original stickers in 4 packs (tickets, stamps and seals, study mood, cute bits), each with a die-cut white border
+  - Drag, resize, rotate, flip, copy, layer and delete stickers; two-finger pinch on phones
+  - 12 frames: dossier, kraft, blue, lilac and peach gingham, cherries, bows, leopard, kisses, plaid, film strip and noir
+  - 6 filters, written as pixel maths so they work on iPhone Safari
+  - Captions in serif, typewriter or handwritten fonts
+  - Undo and redo (Ctrl+Z, Ctrl+Shift+Z)
+- **Print**: a high-resolution PNG (a classic strip is 1200×3600 px) with a dated, numbered Admit One ticket stub, plus the native share sheet on phones.
+- **Mobile-first**: safe-area aware, large touch targets, a landscape phone layout, reduced-motion support.
 
-- Four layouts: classic 4-shot strip, 3-shot trio, 2×2 grid and a single polaroid
-- Live mirrored camera preview, a 3-2-1 countdown, flash and shutter sounds (with a mute toggle)
-- Retake any single shot
-- Falls back to uploading photos when there is no camera or access is denied
-- High-resolution PNG export (a classic strip is 1200×3600 px) with a dated, numbered ticket stub
-- Native share sheet on phones
-- Mobile-first: safe-area aware, large touch targets, a landscape phone layout, reduced-motion support
-
-**Coming next**
-
-- Milestone 2: decorate. Stickers, frames, filters, text, undo and redo
-- Milestone 3: face-tracked props (MediaPipe FaceLandmarker)
-- Milestone 4: the illustrated machine, the mascot and the full sticker set
+**Coming next:** face-tracked props (MediaPipe FaceLandmarker).
 
 ## Tech
 
-React 19, TypeScript, Vite, Zustand. The camera uses `getUserMedia`, and the strips are composited on `<canvas>`.
+React 19, TypeScript, Vite, Zustand, Konva (react-konva). The camera uses `getUserMedia`, and strips are composited on `<canvas>`. Sticker artwork is inline SVG, and the decorate screen is code-split so Konva only loads when you need it.
 
 ## Run it
 
@@ -39,8 +38,9 @@ To test on a phone on the same Wi-Fi, run `npm run dev:phone` and open the HTTPS
 
 ```text
 src/
-  app/      screens: Landing, Setup, Shoot, Result
-  booth/    layouts, camera hook, frame capture, sounds
-  export/   strip renderer (photos + ticket stub)
+  app/       screens: Landing, Setup, Shoot, Decorate, Result
+  booth/     layouts, camera hook, frame capture, sounds
+  decorate/  stickers (SVG), frames, filters, Konva canvas
+  export/    strip renderer (frame + filtered photos + ticket stub)
   store/    Zustand session store
 ```

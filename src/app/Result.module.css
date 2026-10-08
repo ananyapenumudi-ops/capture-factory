@@ -3,10 +3,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px var(--gutter) 0;
+  padding: 6px var(--gutter) 0;
 }
 
-/* The printer's mouth: the strip slides out from behind this bar. */
+.empty {
+  color: var(--paper);
+  font-weight: 700;
+  margin: 60px 0 16px;
+}
+
 .printer {
   position: relative;
   display: flex;
@@ -15,66 +20,186 @@
   width: 100%;
 }
 
-.slot {
+/* The machine's output slot the strip slides out of. */
+.mouth {
   position: relative;
   z-index: 2;
-  width: min(320px, 90%);
-  height: 22px;
-  border: 4px solid var(--ink);
-  border-radius: 999px;
-  background: var(--sky-deep);
-  box-shadow: 0 0 0 5px var(--periwinkle), 0 0 0 9px var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(360px, 94%);
+  height: 34px;
+  padding: 0 14px;
+  border: var(--line);
+  border-radius: 8px;
+  background: linear-gradient(#55504c, #2b2522);
+  color: var(--tan);
+  box-shadow: var(--lift);
+}
+
+.light {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #6ee07a;
+  box-shadow: 0 0 8px #6ee07a;
+  animation: blink 0.5s step-end 5;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.2;
+  }
 }
 
 .paper {
   overflow: hidden;
-  margin-top: -10px;
-  padding: 0 12px 16px;
+  margin-top: -6px;
+  padding: 0 14px 22px;
   display: flex;
   justify-content: center;
 }
 
+.stripWrap {
+  position: relative;
+  animation: feed 2.2s cubic-bezier(0.25, 0.7, 0.25, 1) both;
+}
+
+/* The strip feeds out of the slot in little jerks, like a real printer. */
+@keyframes feed {
+  0% {
+    transform: translateY(-100%);
+  }
+  25% {
+    transform: translateY(-72%);
+  }
+  35% {
+    transform: translateY(-70%);
+  }
+  60% {
+    transform: translateY(-30%);
+  }
+  70% {
+    transform: translateY(-28%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 .strip {
-  max-height: 64svh;
+  max-height: 62svh;
   width: auto;
   max-width: 100%;
-  border-radius: 6px;
-  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.45);
-  animation: develop 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  box-shadow: 6px 8px 0 rgba(0, 0, 0, 0.35);
+  animation: develop 3.4s ease-out both;
 }
 
 @keyframes develop {
   0% {
-    transform: translateY(-100%);
-    filter: sepia(1) brightness(1.6) blur(3px);
+    filter: sepia(1) brightness(1.7) contrast(0.5) blur(2px);
   }
-  55% {
-    transform: translateY(0);
-    filter: sepia(0.8) brightness(1.3) blur(1.5px);
+  60% {
+    filter: sepia(0.5) brightness(1.2) contrast(0.85) blur(0.5px);
   }
   100% {
-    transform: translateY(0);
     filter: none;
   }
 }
 
-.developing {
-  color: var(--cream);
-  font-weight: 600;
-  padding: 40px 0;
-  margin: 0;
+.developed {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  translate: -50% 0;
+  padding: 4px 14px;
+  border: 4px solid var(--red);
+  border-radius: 6px;
+  color: var(--red);
+  background: rgba(244, 236, 216, 0.5);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  --r: -12deg;
+  animation:
+    slam 0.4s cubic-bezier(0.3, 1.4, 0.5, 1) 2.3s both,
+    fade 0.6s ease-in 4.6s forwards;
+  pointer-events: none;
+}
+
+@keyframes slam {
+  0% {
+    opacity: 0;
+    transform: scale(2.6) rotate(var(--r));
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.92) rotate(var(--r));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(var(--r));
+  }
+}
+
+@keyframes fade {
+  to {
+    opacity: 0;
+    transform: scale(1.1) rotate(var(--r));
+  }
+}
+
+.confetti {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.confetti span {
+  position: absolute;
+  opacity: 0;
+  border: 1px solid rgba(43, 37, 34, 0.5);
+  animation: burst 1.6s cubic-bezier(0.15, 0.6, 0.4, 1) both;
+}
+
+@keyframes burst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(var(--x), var(--y)) rotate(var(--rot));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), calc(var(--y) + 220px)) rotate(calc(var(--rot) * 1.5));
+  }
 }
 
 .actions {
   margin-top: auto;
   width: calc(100% + 2 * var(--gutter));
-  background: var(--cream);
-  border-radius: 28px 28px 0 0;
-  padding: 20px var(--gutter) calc(20px + env(safe-area-inset-bottom));
+  background-color: var(--paper);
+  background-image: var(--grain);
+  border-top: var(--line);
+  padding: 18px var(--gutter) calc(20px + env(safe-area-inset-bottom));
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.receipt {
+  margin: 0;
+  opacity: 0.7;
 }
 
 .row {
@@ -82,5 +207,4 @@
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
-  width: 100%;
 }
