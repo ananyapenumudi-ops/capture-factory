@@ -8,9 +8,11 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "dev:phone": "vite --mode phone"
+    "dev:phone": "vite --mode phone",
+    "postinstall": "node scripts/copy-mediapipe.mjs"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.1.0",
     "konva": "^10.7.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

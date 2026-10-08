@@ -3,6 +3,8 @@ import { cropToBlob, fileToBlob } from '../booth/capture'
 import { getLayout } from '../booth/layouts'
 import { beep, shutter, unlockAudio } from '../booth/sounds'
 import { useCamera } from '../booth/useCamera'
+import { PROPS } from '../face/props'
+import { useFaceProps } from '../face/useFaceProps'
 import { useSession } from '../store/session'
 import styles from './Shoot.module.css'
 
@@ -23,8 +25,11 @@ export function Shoot() {
   const setShot = useSession((s) => s.setShot)
   const clearShots = useSession((s) => s.clearShots)
   const go = useSession((s) => s.go)
+  const props = useSession((s) => s.props)
+  const toggleProp = useSession((s) => s.toggleProp)
 
   const { videoRef, status, retry } = useCamera()
+  const { overlayRef, composite, ...face } = useFaceProps(videoRef, props, status === 'ready')
   const allTaken = shots.every(Boolean)
   const [phase, setPhase] = useState<Phase>(allTaken ? 'review' : 'ready')
   const [count, setCount] = useState<number | null>(null)
@@ -51,9 +56,10 @@ export function Shoot() {
         await sleep(800)
       }
       setCount(null)
-      const video = videoRef.current
-      if (!alive.current || !video) return
-      const blob = await cropToBlob(video, layout.slotW, layout.slotH, true)
+      // The frame with any face props drawn on, so they are baked into the photo.
+      const frame = composite()
+      if (!alive.current || !frame) return
+      const blob = await cropToBlob(frame, layout.slotW, layout.slotH, true)
       setFlash(true)
       if (!muted) shutter()
       setTimeout(() => setFlash(false), 220)
@@ -89,6 +95,11 @@ export function Shoot() {
           </div>
           <div className={styles.viewfinder} style={{ aspectRatio: `${aspect}` }}>
           <video ref={videoRef} className={styles.video} playsInline muted autoPlay aria-label="Camera preview" />
+          <canvas ref={overlayRef} className={styles.overlay} aria-hidden="true" />
+          {cameraOk && face.status === 'loading' && <div className={styles.propsBadge}>Waking up the face tracker…</div>}
+          {cameraOk && face.status === 'ready' && face.faces === 0 && !shooting && (
+            <div className={styles.propsBadge}>Looking for a face…</div>
+          )}
 
           {status === 'starting' && <div className={styles.notice}>Warming up the camera…</div>}
           {status !== 'ready' && status !== 'starting' && (
@@ -113,6 +124,35 @@ export function Shoot() {
           )}
           </div>
         </div>
+
+        {cameraOk && (
+          <div className={styles.props}>
+            <div className={styles.propsHead}>
+              <span className="label">Props</span>
+              {face.status === 'error' && (
+                <button className={styles.propsError} onClick={face.retry}>
+                  Face tracker failed to load. Tap to retry.
+                </button>
+              )}
+            </div>
+            <div className={styles.propList} role="group" aria-label="Face props">
+              {PROPS.map((p) => (
+                <button
+                  key={p.id}
+                  className={styles.prop}
+                  aria-pressed={props.includes(p.id)}
+                  disabled={shooting}
+                  onClick={() => toggleProp(p.id)}
+                >
+                  <span className={styles.propEmoji} aria-hidden="true">
+                    {p.emoji}
+                  </span>
+                  {p.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <ol className={styles.thumbs} aria-label="Your shots">
           {shots.map((s, i) => (

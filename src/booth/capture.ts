@@ -1,4 +1,4 @@
-type Source = HTMLVideoElement | HTMLImageElement | ImageBitmap
+type Source = HTMLVideoElement | HTMLImageElement | HTMLCanvasElement | ImageBitmap
 
 function sourceSize(src: Source): { w: number; h: number } {
   if (src instanceof HTMLVideoElement) return { w: src.videoWidth, h: src.videoHeight }

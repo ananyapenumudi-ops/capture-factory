@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { getLayout, type LayoutId } from '../booth/layouts'
 import type { FilterId } from '../decorate/filters'
 import type { FrameId } from '../decorate/frames'
+import type { PropId } from '../face/props'
 
 export type Step = 'landing' | 'setup' | 'shoot' | 'decorate' | 'result'
 
@@ -31,6 +32,8 @@ type SessionState = {
   filterId: FilterId
   shots: (Shot | null)[]
   items: Item[]
+  /** Face-tracked props switched on in the camera. */
+  props: PropId[]
   print: Print | null
   serial: string
   muted: boolean
@@ -40,6 +43,7 @@ type SessionState = {
   setFilter: (id: FilterId) => void
   setShot: (index: number, blob: Blob) => void
   setItems: (items: Item[]) => void
+  toggleProp: (id: PropId) => void
   setPrint: (blob: Blob) => void
   /** Clears shots, stickers and the print, and issues a new ticket serial. */
   newSession: () => void
@@ -79,6 +83,7 @@ export const useSession = create<SessionState>((set, get) => ({
   filterId: 'none',
   shots: emptyShots('strip4'),
   items: [],
+  props: [],
   print: null,
   serial: makeSerial(),
   muted: readMuted(),
@@ -107,6 +112,11 @@ export const useSession = create<SessionState>((set, get) => ({
   },
 
   setItems: (items) => set({ items }),
+
+  toggleProp: (id) => {
+    const props = get().props
+    set({ props: props.includes(id) ? props.filter((p) => p !== id) : [...props, id] })
+  },
 
   setPrint: (blob) => {
     const old = get().print

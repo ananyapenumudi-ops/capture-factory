@@ -333,3 +333,109 @@
     width: 56px;
   }
 }
+
+/* Props are drawn in video coordinates, so the overlay crops and mirrors exactly like the video. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+
+.propsBadge {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 12px;
+  border: 2px solid var(--ink);
+  background: var(--mustard);
+  font-weight: 700;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.props {
+  width: min(100%, 720px);
+}
+
+.propsHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: var(--paper);
+}
+
+.propsError {
+  border: none;
+  background: none;
+  color: var(--mustard);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* One swipeable row on phones; wraps on wider screens. */
+.propList {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+@media (min-width: 760px) {
+  .propList {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.prop {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 42px;
+  padding: 6px 12px;
+  border: 2px solid var(--paper);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.prop[aria-pressed='true'] {
+  background: var(--paper);
+  color: var(--ink);
+  transform: rotate(-2deg);
+}
+
+.prop:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.propEmoji {
+  font-size: 1.1rem;
+}
