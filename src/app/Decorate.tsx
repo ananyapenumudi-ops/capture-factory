@@ -20,12 +20,13 @@ const TABS: { id: Tab; label: string }[] = [
 ]
 
 const FONTS = [
+  { id: 'Oswald', label: 'Bold', style: { fontFamily: 'var(--font-display)', textTransform: 'uppercase' as const } },
   { id: '"Playfair Display"', label: 'Serif', style: { fontFamily: 'var(--font-display)', fontStyle: 'italic' } },
   { id: '"Courier Prime"', label: 'Typewriter', style: { fontFamily: 'var(--font-mono)' } },
   { id: '"Homemade Apple"', label: 'Handwritten', style: { fontFamily: 'var(--font-hand)', fontSize: '0.8rem' } },
 ]
 
-const COLORS = ['#2B2522', '#C8282E', '#F4ECD8', '#D9A441', '#E0607E', '#3B4F8F']
+const COLORS = ['#141414', '#FFFFFF', '#FF6B2C', '#FFC83D', '#E85BB5', '#4D4DF0', '#8E5CF0', '#2F9E7E']
 
 const uid = () => crypto.randomUUID().slice(0, 8)
 /** Random number in [-range/2, range/2], for a hand-placed look. */
@@ -75,7 +76,7 @@ export function Decorate() {
   const { items, commit, undo, redo, canUndo, canRedo } = useHistory()
 
   const [tab, setTab] = useState<Tab>('stickers')
-  const [pack, setPack] = useState<PackId>('tickets')
+  const [pack, setPack] = useState<PackId>('pop')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [popId, setPopId] = useState<string | null>(null)
   const [base, setBase] = useState<HTMLCanvasElement | null>(null)
@@ -84,7 +85,7 @@ export function Decorate() {
   const [printing, setPrinting] = useState(false)
   const [draft, setDraft] = useState('Best day ever')
   const [font, setFont] = useState(FONTS[0].id)
-  const [color, setColor] = useState(COLORS[1])
+  const [color, setColor] = useState(COLORS[0])
 
   const boardRef = useRef<HTMLDivElement>(null)
   const stageRef = useRef<Konva.Stage | null>(null)
@@ -193,7 +194,7 @@ export function Decorate() {
   return (
     <div className={styles.decorate}>
       <div className={styles.top}>
-        <button className="btn btn-ghost btn-small" onClick={() => go('shoot')}>
+        <button className="btn btn-outline btn-small" onClick={() => go('shoot')}>
           ← Shots
         </button>
         <div className={styles.history}>
@@ -204,7 +205,7 @@ export function Decorate() {
             ↷
           </button>
         </div>
-        <button className="btn btn-red btn-small" onClick={print} disabled={!base || printing}>
+        <button className="btn btn-hot btn-small" onClick={print} disabled={!base || printing}>
           {printing ? 'Printing…' : 'Print →'}
         </button>
       </div>
@@ -270,7 +271,7 @@ export function Decorate() {
           )}
         </div>
 
-        <section className={`paper ${styles.drawer}`} aria-label="Decorating tools">
+        <section className={`card ${styles.drawer}`} aria-label="Decorating tools">
           <div className={styles.tabs} role="tablist">
             {TABS.map((t) => (
               <button key={t.id} role="tab" aria-selected={tab === t.id} className={styles.tab} onClick={() => setTab(t.id)}>
@@ -367,7 +368,7 @@ export function Decorate() {
                   ))}
                 </div>
                 {selected?.kind !== 'text' && (
-                  <button className="btn btn-dark" onClick={addText}>
+                  <button className="btn" onClick={addText}>
                     Add caption
                   </button>
                 )}

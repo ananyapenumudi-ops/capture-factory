@@ -6,11 +6,12 @@
  * whatever font the device substitutes.
  */
 
-export type PackId = 'tickets' | 'stamps' | 'mood' | 'cute'
+export type PackId = 'pop' | 'tickets' | 'stamps' | 'mood' | 'cute'
 
 export type StickerDef = { id: string; pack: PackId; name: string; w: number; h: number; svg: string }
 
 export const PACKS: { id: PackId; name: string }[] = [
+  { id: 'pop', name: 'Pop' },
   { id: 'tickets', name: 'Tickets' },
   { id: 'stamps', name: 'Stamps' },
   { id: 'mood', name: 'Study mood' },
@@ -162,7 +163,129 @@ function textCard(w: number, h: number, lines: { t: string; size: number; font?:
 
 const heartPath = 'M50 86 C20 64 4 46 4 28 C4 14 15 4 28 4 C38 4 46 10 50 18 C54 10 62 4 72 4 C85 4 96 14 96 28 C96 46 80 64 50 86Z'
 
+
+const P_ORANGE = '#FF6B2C'
+const P_TANGERINE = '#FF9A3C'
+const P_NAVY = '#2E2EB8'
+const P_BLUE = '#4D4DF0'
+const P_SKY = '#86B4F7'
+const P_PINK = '#F49AD6'
+const P_PINK_LIGHT = '#FBC7EA'
+const P_PURPLE = '#8E5CF0'
+const P_YELLOW = '#FFC83D'
+const P_GREEN = '#2F9E7E'
+
+const sparklePath = (x: number, y: number, r: number) => {
+  const k = r * 0.22
+  return `M${x} ${y - r} C${x + k} ${y - k} ${x + k} ${y - k} ${x + r} ${y} C${x + k} ${y + k} ${x + k} ${y + k} ${x} ${y + r} C${x - k} ${y + k} ${x - k} ${y + k} ${x - r} ${y} C${x - k} ${y - k} ${x - k} ${y - k} ${x} ${y - r}Z`
+}
+
+const POP: StickerDef[] = [
+  {
+    id: 'planet',
+    pack: 'pop',
+    name: 'Ringed planet',
+    w: 220,
+    h: 150,
+    svg: svg(
+      220,
+      150,
+      `<defs><clipPath id="pl"><circle cx="110" cy="75" r="50"/></clipPath>` +
+        `<clipPath id="front"><rect x="-40" y="75" width="300" height="120" transform="rotate(-14 110 75)"/></clipPath>` +
+        `<g id="ring"><ellipse cx="110" cy="75" rx="96" ry="24" transform="rotate(-14 110 75)" fill="none" stroke="${INK}" stroke-width="15"/>` +
+        `<ellipse cx="110" cy="75" rx="96" ry="24" transform="rotate(-14 110 75)" fill="none" stroke="${P_PURPLE}" stroke-width="8"/></g></defs>` +
+        `<use href="#ring"/>` +
+        `<circle cx="110" cy="75" r="50" fill="${P_TANGERINE}"/>` +
+        `<g clip-path="url(#pl)" fill="${P_ORANGE}"><rect x="50" y="52" width="120" height="12"/><rect x="50" y="80" width="120" height="18"/></g>` +
+        `<circle cx="110" cy="75" r="50" fill="none" stroke="${INK}" stroke-width="4"/>` +
+        `<g clip-path="url(#front)"><use href="#ring"/></g>`,
+    ),
+  },
+  {
+    id: 'winged-polaroid',
+    pack: 'pop',
+    name: 'Winged polaroid',
+    w: 260,
+    h: 160,
+    svg: svg(
+      260,
+      160,
+      `<g transform="translate(130 84) rotate(-10)">` +
+        `<path d="M-30 -10 C-70 -50 -100 -40 -96 -20 C-80 -22 -74 -12 -86 -2 C-66 -6 -60 4 -70 14 C-52 8 -40 6 -30 4Z" fill="${P_YELLOW}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>` +
+        `<path d="M30 -10 C70 -50 100 -40 96 -20 C80 -22 74 -12 86 -2 C66 -6 60 4 70 14 C52 8 40 6 30 4Z" fill="${P_YELLOW}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>` +
+        `<rect x="-34" y="-40" width="68" height="80" rx="4" fill="#FFF6EA" stroke="${INK}" stroke-width="4"/>` +
+        `<rect x="-26" y="-32" width="52" height="48" fill="${P_PINK}"/><rect x="-26" y="-8" width="52" height="24" fill="${P_BLUE}"/>` +
+        `<circle cx="-8" cy="-16" r="9" fill="${P_YELLOW}"/><path d="M-26 16 L-10 0 L4 12 L14 4 L26 16Z" fill="${P_GREEN}"/></g>`,
+    ),
+  },
+  {
+    id: 'pink-cloud',
+    pack: 'pop',
+    name: 'Pink cloud',
+    w: 220,
+    h: 130,
+    svg: svg(
+      220,
+      130,
+      `<g transform="translate(110 70)"><g fill="${P_PINK_LIGHT}"><circle cx="-34" cy="14" r="30"/><circle cx="40" cy="16" r="28"/><rect x="-80" y="12" width="160" height="40" rx="20"/></g>` +
+        `<g fill="${P_PINK}"><circle cx="-40" cy="2" r="30"/><circle cx="0" cy="-24" r="42"/><circle cx="42" cy="2" r="28"/><rect x="-80" y="-2" width="160" height="40" rx="20"/></g></g>`,
+    ),
+  },
+  { id: 'pop-sparkle', pack: 'pop', name: 'Purple sparkle', w: 120, h: 120, svg: svg(120, 120, `<path d="${sparklePath(60, 60, 56)}" fill="${P_PURPLE}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`) },
+  {
+    id: 'rainbow',
+    pack: 'pop',
+    name: 'Rainbow',
+    w: 260,
+    h: 150,
+    svg: svg(
+      260,
+      150,
+      [P_ORANGE, P_TANGERINE, P_YELLOW, P_GREEN, P_BLUE, P_PURPLE]
+        .map((c, i) => `<path d="M${30 + i * 14} 130 A${100 - i * 14} ${100 - i * 14} 0 0 1 ${230 - i * 14} 130" fill="none" stroke="${c}" stroke-width="15"/>`)
+        .join('') +
+        `<g fill="#FFFFFF" stroke="${INK}" stroke-width="3"><circle cx="30" cy="128" r="20"/><circle cx="54" cy="134" r="16"/><circle cx="230" cy="128" r="20"/><circle cx="206" cy="134" r="16"/></g>`,
+    ),
+  },
+  {
+    id: 'smiley-sun',
+    pack: 'pop',
+    name: 'Smiley sun',
+    w: 190,
+    h: 190,
+    svg: svg(
+      190,
+      190,
+      Array.from({ length: 12 }, (_, i) => `<path d="M95 4 L106 34 L84 34Z" fill="${P_ORANGE}" stroke="${INK}" stroke-width="3" stroke-linejoin="round" transform="rotate(${i * 30} 95 95)"/>`).join('') +
+        `<circle cx="95" cy="95" r="56" fill="${P_YELLOW}" stroke="${INK}" stroke-width="4"/>` +
+        `<circle cx="78" cy="86" r="6" fill="${INK}"/><circle cx="112" cy="86" r="6" fill="${INK}"/>` +
+        `<path d="M72 106 Q95 132 118 106" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` +
+        `<circle cx="66" cy="104" r="7" fill="${P_PINK}"/><circle cx="124" cy="104" r="7" fill="${P_PINK}"/>`,
+    ),
+  },
+  {
+    id: 'lens',
+    pack: 'pop',
+    name: 'Camera lens',
+    w: 200,
+    h: 200,
+    svg: svg(
+      200,
+      200,
+      `<circle cx="100" cy="100" r="94" fill="${P_ORANGE}" stroke="${INK}" stroke-width="4"/>` +
+        `<circle cx="100" cy="100" r="72" fill="${P_NAVY}"/>` +
+        `<path d="M34 90 C60 60 84 104 110 74 C136 44 160 84 172 64 L172 84 C156 106 136 66 110 96 C84 126 60 82 34 112Z" fill="${P_SKY}"/>` +
+        `<circle cx="100" cy="100" r="40" fill="${INK}"/><circle cx="100" cy="100" r="31" fill="${P_BLUE}"/>` +
+        `<polygon points="100,84 114,92 114,108 100,116 86,108 86,92" fill="${P_YELLOW}" stroke="${INK}" stroke-width="3"/>` +
+        `<path d="M78 76 Q88 68 100 67" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>`,
+    ),
+  },
+  { id: 'bolt', pack: 'pop', name: 'Lightning', w: 120, h: 190, svg: svg(120, 190, `<path d="M70 4 L14 108 H54 L40 186 L106 70 H64 L84 4Z" fill="${P_YELLOW}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>`) },
+]
+
 export const STICKERS: StickerDef[] = [
+  ...POP,
+
   // ── Tickets ──────────────────────────────────────────────
   { id: 'admit-one', pack: 'tickets', name: 'Admit one', w: 300, h: 150, svg: ticket({ bg: RED, fg: PAPER, title: 'ADMIT ONE', font: HEAVY, size: 50, top: '★ ★ ★', serial: '№ 146017' }) },
   { id: 'fun-pass', pack: 'tickets', name: 'Fun pass', w: 300, h: 150, svg: ticket({ bg: PINK, fg: INK, title: 'FUN PASS', font: SERIF, size: 54, bottom: 'GOOD FOR ONE PHOTO', serial: '043572' }) },

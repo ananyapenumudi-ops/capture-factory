@@ -30,9 +30,9 @@ export function Setup() {
   return (
     <div className={styles.setup}>
       <div className={styles.head}>
-        <p className="label">Form 01 · Print order</p>
+        <p className="label">Step 1 of 4</p>
         <h1 className={styles.title}>Pick your print</h1>
-        <p className={styles.sub}>Tick one box. The machine doesn't judge.</p>
+        <p className={styles.sub}>Pick one. The machine doesn't judge.</p>
       </div>
 
       <div className={styles.grid} role="radiogroup" aria-label="Photo layout">
@@ -41,7 +41,7 @@ export function Setup() {
             key={l.id}
             role="radio"
             aria-checked={l.id === layoutId}
-            className={`paper ${styles.card}`}
+            className={`card ${styles.card}`}
             style={{ '--i': i, '--r': `${[-2, 1.5, -1, 2][i]}deg` } as CSSProperties}
             onClick={() => chooseLayout(l.id)}
           >
@@ -53,7 +53,7 @@ export function Setup() {
             <span className={styles.cardBlurb}>{l.blurb}</span>
             {l.id === layoutId && (
               <span className={styles.selected} aria-hidden="true">
-                Selected
+                Picked!
               </span>
             )}
           </button>
@@ -61,10 +61,10 @@ export function Setup() {
       </div>
 
       <div className={styles.actions}>
-        <button className="btn btn-ghost" onClick={() => go('landing')}>
+        <button className="btn btn-outline" onClick={() => go('landing')}>
           ← Back
         </button>
-        <button className="btn btn-red" onClick={() => go('shoot')}>
+        <button className="btn btn-hot" onClick={() => go('shoot')}>
           Next: camera →
         </button>
       </div>

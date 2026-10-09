@@ -4,6 +4,8 @@
  */
 
 export type FrameId =
+  | 'pop-peach'
+  | 'cosmic'
   | 'dossier'
   | 'kraft'
   | 'gingham-blue'
@@ -100,9 +102,68 @@ function scatter(w: number, h: number, step: number, rand: () => number, draw: (
 
 const CHERRY_STEM = 'M30 64 C36 40 50 22 66 10 M66 10 C70 34 70 52 70 68'
 const BOW = 'M50 44 C34 18 8 16 8 38 C8 60 36 60 50 52 C64 60 92 60 92 38 C92 16 66 18 50 44Z M46 52 L30 92 L42 86 L48 94 L52 56Z M54 52 L70 92 L58 86 L52 94 L48 56Z'
+const SPARKLE = 'M50 0 C56 44 56 44 100 50 C56 56 56 56 50 100 C44 56 44 56 0 50 C44 44 44 44 50 0Z'
 const LIPS = 'M6 50 C22 26 40 20 50 32 C60 20 78 26 94 50 C78 78 62 82 50 80 C38 82 22 78 6 50Z'
 
 export const FRAMES: Frame[] = [
+  {
+    id: 'pop-peach',
+    name: 'Pop peach',
+    swatch: 'radial-gradient(circle at 30% 30%, #8E5CF0 0 3px, transparent 4px) 0 0/16px 16px, radial-gradient(circle at 70% 70%, #FF6B2C 0 3px, transparent 4px) 0 0/16px 16px, #FFE2C6',
+    paint: (ctx, w, h, rand) => {
+      ctx.fillStyle = '#FFE2C6'
+      ctx.fillRect(0, 0, w, h)
+      const colors = ['#8E5CF0', '#FF6B2C', '#4D4DF0', '#F49AD6', '#2F9E7E']
+      scatter(w, h, 120, rand, (x, y, r) => {
+        const c = colors[Math.floor(rand() * colors.length)]
+        if (rand() < 0.5) {
+          motif(ctx, SPARKLE, x, y, 34 + rand() * 20, r, c, '')
+        } else {
+          ctx.fillStyle = c
+          ctx.beginPath()
+          ctx.arc(x, y, 5 + rand() * 4, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      })
+    },
+    photoBorder: INK,
+    ticket: { bg: INK, fg: '#FFC83D', accent: '#FFE2C6' },
+  },
+  {
+    id: 'cosmic',
+    name: 'Cosmic',
+    swatch: 'radial-gradient(circle at 40% 40%, #FF9A3C 0 4px, transparent 5px) 0 0/18px 18px, #C9B8FA',
+    paint: (ctx, w, h, rand) => {
+      ctx.fillStyle = '#C9B8FA'
+      ctx.fillRect(0, 0, w, h)
+      scatter(w, h, 150, rand, (x, y) => {
+        const pick = rand()
+        if (pick < 0.3) {
+          // A little ringed planet.
+          const r = 12 + rand() * 10
+          ctx.fillStyle = rand() < 0.5 ? '#FF9A3C' : '#4D4DF0'
+          ctx.beginPath()
+          ctx.arc(x, y, r, 0, Math.PI * 2)
+          ctx.fill()
+          ctx.strokeStyle = INK
+          ctx.lineWidth = 4
+          ctx.stroke()
+          ctx.beginPath()
+          ctx.ellipse(x, y, r * 1.9, r * 0.45, -0.3, 0, Math.PI * 2)
+          ctx.stroke()
+        } else if (pick < 0.7) {
+          motif(ctx, SPARKLE, x, y, 30 + rand() * 18, 0, rand() < 0.5 ? INK : '#FFF6EA', '')
+        } else {
+          ctx.fillStyle = INK
+          ctx.beginPath()
+          ctx.arc(x, y, 4, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      })
+    },
+    photoBorder: INK,
+    ticket: { bg: '#FFC83D', fg: INK, accent: INK },
+  },
   {
     id: 'dossier',
     name: 'Dossier',

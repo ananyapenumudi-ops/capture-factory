@@ -189,11 +189,11 @@ export function Shoot() {
 
         {phase === 'review' && (
           <div className={styles.reviewActions}>
-            <button className="btn btn-red" onClick={() => go('decorate')} disabled={!allTaken}>
+            <button className="btn btn-hot" onClick={() => go('decorate')} disabled={!allTaken}>
               Decorate →
             </button>
             <button
-              className="btn"
+              className="btn btn-outline"
               onClick={() => {
                 clearShots()
                 setPhase('ready')
@@ -206,10 +206,10 @@ export function Shoot() {
 
         {!shooting && (
           <div className={styles.secondary}>
-            <button className="btn btn-small" onClick={() => go('setup')}>
+            <button className="btn btn-outline btn-small" onClick={() => go('setup')}>
               ← Layout
             </button>
-            <label className="btn btn-small">
+            <label className="btn btn-outline btn-small">
               Upload photos
               <input
                 type="file"

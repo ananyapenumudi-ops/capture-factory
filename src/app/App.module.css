@@ -6,138 +6,155 @@
   overflow-x: clip;
 }
 
-.marquee {
-  overflow: hidden;
-  background: var(--red);
-  color: var(--paper);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-  padding-top: env(safe-area-inset-top);
-  border-bottom: 2px solid var(--ink);
-}
-
-.marqueeTrack {
-  display: inline-block;
-  padding: 6px 0;
-  animation: scroll 45s linear infinite;
-}
-
-@keyframes scroll {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px var(--gutter);
+  gap: 12px;
+  padding: calc(12px + env(safe-area-inset-top)) var(--gutter) 12px;
 }
 
-/* The logo is a little paper label pinned to the desk. */
 .logo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  padding: 6px 12px 5px;
-  border: var(--line);
-  background: var(--paper);
-  box-shadow: var(--drop);
+  flex: none;
+  padding: 4px 0;
+  border: none;
+  background: none;
   cursor: pointer;
-  transform: rotate(-2deg);
-  transition: transform 0.2s ease;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 
-@media (hover: hover) {
-  .logo:hover {
-    transform: rotate(1deg) scale(1.03);
+.links {
+  display: none;
+  gap: 26px;
+  font-size: 0.85rem;
+}
+
+.links a {
+  color: var(--ink);
+  text-decoration: none;
+  background-image: linear-gradient(var(--ink), var(--ink));
+  background-size: 0 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease;
+}
+
+.links a:hover {
+  background-size: 100% 2px;
+}
+
+@media (min-width: 720px) {
+  .links {
+    display: flex;
   }
 }
 
-.logoMain {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 1.15rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--red);
-  line-height: 1;
-}
-
-.logoSub {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.headerEnd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .iconBtn {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 2px solid var(--paper);
-  background: rgba(0, 0, 0, 0.15);
-  font-size: 1.1rem;
+  border: var(--line);
+  background: transparent;
+  font-size: 1rem;
   cursor: pointer;
 }
 
 .iconBtn:focus-visible {
-  outline: 3px solid var(--mustard);
+  outline: 3px solid var(--blue);
   outline-offset: 2px;
 }
 
-/* Progress shown as file-folder tabs. */
-.tabs ol {
+.start {
+  min-height: 40px;
+}
+
+/* Progress as a row of numbered pills. */
+.steps ol {
   list-style: none;
   display: flex;
   gap: 4px;
   margin: 0;
-  padding: 0 var(--gutter);
-  overflow-x: auto;
-  scrollbar-width: none;
+  padding: 0;
 }
 
-.tabs li {
-  flex: 1;
-  min-width: max-content;
-  padding: 7px 10px 6px;
-  border-radius: 8px 8px 0 0;
-  background: var(--kraft);
-  color: rgba(244, 236, 216, 0.75);
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  text-align: center;
-  transition: background 0.3s ease, transform 0.3s ease;
+  opacity: 0.45;
+  transition: opacity 0.3s ease, background 0.3s ease;
 }
 
-.tabNum {
-  opacity: 0.7;
+.stepNum {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: var(--line);
+  border-radius: 50%;
+  font-size: 0.75rem;
 }
 
-.tabDone {
-  background: var(--paper-aged) !important;
-  color: var(--ink) !important;
+/* On phones only the current step shows its label. */
+.stepLabel {
+  display: none;
 }
 
-.tabActive {
-  background: var(--paper) !important;
-  color: var(--red) !important;
-  transform: translateY(-3px);
+@media (min-width: 720px) {
+  .stepLabel {
+    display: inline;
+    padding-right: 8px;
+  }
+}
+
+.stepDone {
+  opacity: 1;
+}
+
+.stepDone .stepNum {
+  background: var(--green);
+  color: #fff;
+}
+
+.stepActive {
+  opacity: 1;
+  background: var(--ink);
+  color: #fff;
+}
+
+.stepActive .stepNum {
+  background: var(--yellow);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.stepActive .stepLabel {
+  display: inline;
+  padding-right: 8px;
 }
 
 .main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-top: 12px;
 }
 
 .screen {
@@ -147,8 +164,39 @@
 }
 
 .loading {
-  color: var(--paper);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
   text-align: center;
   margin: 80px 0;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 18px var(--gutter) calc(18px + env(safe-area-inset-bottom));
+  background: var(--ink);
+  color: var(--peach);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Phones: the step pills get their own row under the logo. */
+@media (max-width: 719px) {
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .steps {
+    order: 3;
+    width: 100%;
+  }
+
+  .steps ol {
+    justify-content: center;
+  }
 }

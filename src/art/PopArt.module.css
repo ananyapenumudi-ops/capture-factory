@@ -1,0 +1,187 @@
+.scene,
+.portrait,
+.small {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* SVG children rotate around the origin set inline (in viewBox units). */
+.scene *,
+.portrait *,
+.small * {
+  transform-box: view-box;
+}
+
+.spin {
+  animation: spin 60s linear infinite;
+}
+
+.spinRev {
+  animation: spin 40s linear infinite reverse;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.drift {
+  animation: drift 9s ease-in-out infinite alternate;
+}
+
+.driftRev {
+  animation: drift 11s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-22px);
+  }
+  to {
+    transform: translateX(22px);
+  }
+}
+
+.bob {
+  animation: bob 4s ease-in-out infinite;
+}
+
+.bobSlow {
+  animation: bob 7s ease-in-out infinite;
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.float {
+  animation: float 3.2s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% {
+    transform: translate(6px, -14px) rotate(3deg);
+  }
+}
+
+.flapL,
+.flapR {
+  animation: flap 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes flap {
+  to {
+    transform: scaleY(0.45) rotate(-8deg);
+  }
+}
+
+.march {
+  animation: march 1.6s linear infinite;
+}
+
+@keyframes march {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+.twinkle {
+  animation: twinkle 2.4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  50% {
+    transform: scale(0.55) rotate(25deg);
+  }
+}
+
+.wiggle {
+  animation: wiggle 1.8s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  50% {
+    transform: rotate(12deg) scale(1.1);
+  }
+}
+
+.headBob {
+  animation: headBob 3.6s ease-in-out infinite;
+}
+
+@keyframes headBob {
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+.earWiggle {
+  animation: ears 2.6s ease-in-out infinite;
+}
+
+@keyframes ears {
+  0%,
+  80%,
+  100% {
+    transform: none;
+  }
+  85% {
+    transform: rotate(-4deg) translateY(-3px);
+  }
+  92% {
+    transform: rotate(4deg) translateY(-3px);
+  }
+}
+
+.shades {
+  animation: shades 3.6s ease-in-out infinite;
+}
+
+@keyframes shades {
+  0%,
+  70%,
+  100% {
+    transform: none;
+  }
+  78% {
+    transform: translateY(-10px);
+  }
+  86% {
+    transform: translateY(0);
+  }
+}
+
+/* Circular "Listen now"-style badge with text running round the rim. */
+.badge {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--peach);
+}
+
+.badgeRing {
+  position: absolute;
+  inset: 0;
+  animation: spin 14s linear infinite;
+}
+
+.badgeCore {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--yellow);
+  font-size: 1.2rem;
+}

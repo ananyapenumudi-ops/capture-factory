@@ -1,32 +1,34 @@
 :root {
-  /* Retro dossier palette: kraft desk, aged paper, ink, stamp red. */
-  --desk: #6b4f3a;
-  --desk-dark: #4a3628;
-  --kraft: #8a6a50;
-  --paper: #f4ecd8;
-  --paper-aged: #e6d6b8;
-  --ink: #2b2522;
-  --charcoal: #3a3634;
-  --red: #c8282e;
-  --tan: #d8b79a;
-  --mustard: #d9a441;
-  --pink: #e9a3b0;
-  --stamp-blue: #3b4f8f;
+  /* Pop-art palette: peach and lavender grounds, black ink, saturated accents. */
+  --peach: #ffe2c6;
+  --peach-deep: #ffd2ab;
+  --lavender: #c9b8fa;
+  --lavender-deep: #b39cf5;
+  --cream: #fff6ea;
+  --ink: #141414;
+  --orange: #ff6b2c;
+  --tangerine: #ff9a3c;
+  --blue: #4d4df0;
+  --sky: #86b4f7;
+  --pink: #f49ad6;
+  --hotpink: #e85bb5;
+  --purple: #8e5cf0;
+  --yellow: #ffc83d;
+  --green: #2f9e7e;
+  --red: #f0442e;
 
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-mono: 'Courier Prime', 'Courier New', Courier, monospace;
+  --font-display: 'Oswald', 'Arial Narrow', Impact, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-hand: 'Homemade Apple', 'Segoe Script', cursive;
+  --font-mono: 'Courier Prime', 'Courier New', monospace;
 
   --gutter: max(16px, env(safe-area-inset-left));
   --line: 2px solid var(--ink);
-  --drop: 4px 5px 0 rgba(30, 20, 12, 0.35);
-  --lift: 0 10px 24px rgba(30, 20, 12, 0.35);
-
-  /* Fine paper grain, generated with SVG noise so there is no image to download. */
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.14 0 0 0 0 0.08 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --radius: 14px;
+  --pop: 4px 4px 0 var(--ink);
 
   color-scheme: light;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
@@ -41,10 +43,10 @@
 html,
 body {
   margin: 0;
-  background-color: var(--desk);
-  background-image: var(--grain), radial-gradient(ellipse at 50% 0%, #7a5b43 0%, var(--desk) 55%, var(--desk-dark) 100%);
-  background-attachment: fixed;
+  background: var(--peach);
   overscroll-behavior-y: none;
+  scroll-behavior: smooth;
+  scroll-padding-top: 16px;
 }
 
 body {
@@ -68,129 +70,105 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 900;
-  line-height: 1.05;
+  font-weight: 700;
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
   margin: 0;
 }
 
-/* A sheet of aged paper: the base surface for every panel. */
-.paper {
-  background-color: var(--paper);
-  background-image: var(--grain);
-  border: 1px solid rgba(43, 37, 34, 0.25);
-  box-shadow: var(--lift);
+/* An ink-outlined card: the base surface for panels. */
+.card {
+  background: var(--cream);
+  border: var(--line);
+  border-radius: var(--radius);
 }
 
-/* Typewriter label, e.g. "FILE No. 0042" */
+/* Small uppercase label, e.g. "Step 01" */
 .label {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-/* Buttons look like stamped paper tags. */
+/* Buttons: solid black blocks with condensed caps, like the reference's pills. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 50px;
+  min-height: 48px;
   padding: 10px 22px;
   border: var(--line);
-  border-radius: 4px;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.95rem;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: var(--drop);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
   user-select: none;
 }
 
 @media (hover: hover) {
   .btn:hover:not(:disabled) {
-    transform: translate(-1px, -2px) rotate(-1deg);
-    box-shadow: 6px 8px 0 rgba(30, 20, 12, 0.35);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--pop);
   }
 }
 
 .btn:active:not(:disabled) {
-  transform: translate(3px, 3px);
-  box-shadow: 1px 1px 0 rgba(30, 20, 12, 0.35);
+  transform: translate(1px, 1px);
+  box-shadow: none;
 }
 
 .btn:focus-visible {
-  outline: 3px solid var(--mustard);
+  outline: 3px solid var(--blue);
   outline-offset: 3px;
 }
 
 .btn:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-.btn-red {
-  background: var(--red);
-  color: var(--paper);
+/* Accent and outline variants. */
+.btn-hot {
+  background: var(--orange);
+  color: var(--ink);
 }
 
-.btn-dark {
-  background: var(--charcoal);
-  color: var(--paper);
-}
-
-.btn-ghost {
+.btn-outline {
   background: transparent;
-  color: var(--paper);
-  border-color: var(--paper);
-  box-shadow: none;
+  color: var(--ink);
+}
+
+.btn-light {
+  background: var(--cream);
+  color: var(--ink);
 }
 
 .btn-small {
   min-height: 40px;
-  padding: 6px 12px;
-  font-size: 0.78rem;
+  padding: 6px 14px;
+  font-size: 0.85rem;
 }
 
-/* Every screen slides in like a sheet being dealt onto the desk. */
+/* Every screen rises in as it opens. */
 .screen-enter {
-  animation: deal 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: rise-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-@keyframes deal {
+@keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(28px) rotate(-1.2deg);
-  }
-}
-
-/* A rubber stamp slamming down. */
-@keyframes slam {
-  0% {
-    opacity: 0;
-    transform: scale(2.4) rotate(var(--r, -8deg));
-  }
-  60% {
-    opacity: 1;
-    transform: scale(0.92) rotate(var(--r, -8deg));
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(var(--r, -8deg));
-  }
-}
-
-/* Gentle idle bob for props lying on the desk. */
-@keyframes bob {
-  50% {
-    transform: translateY(-6px) rotate(calc(var(--r, 0deg) + 1.5deg));
+    transform: translateY(24px);
   }
 }
 

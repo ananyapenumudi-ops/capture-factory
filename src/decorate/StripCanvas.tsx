@@ -211,10 +211,10 @@ export function StripCanvas({ width, height, scale, base, items, images, selecte
           enabledAnchors={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
           anchorSize={coarse ? 26 : 16}
           anchorCornerRadius={13}
-          anchorStroke="#2B2522"
-          anchorFill="#F4ECD8"
+          anchorStroke="#141414"
+          anchorFill="#FFC83D"
           anchorStrokeWidth={2}
-          borderStroke="#C8282E"
+          borderStroke="#4D4DF0"
           borderDash={[8, 6]}
           borderStrokeWidth={2}
           rotateAnchorOffset={coarse ? 44 : 34}

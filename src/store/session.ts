@@ -79,7 +79,7 @@ function revokeAll(shots: (Shot | null)[]) {
 export const useSession = create<SessionState>((set, get) => ({
   step: 'landing',
   layoutId: 'strip4',
-  frameId: 'dossier',
+  frameId: 'pop-peach',
   filterId: 'none',
   shots: emptyShots('strip4'),
   items: [],

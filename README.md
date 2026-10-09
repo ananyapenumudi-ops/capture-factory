@@ -1,19 +1,19 @@
 # Capture Factory
 
-A retro photo booth machine that runs in your browser. Strike a pose, get a 3-2-1 countdown, and walk away with a printed-style photo strip, complete with an "Admit One" ticket stub.
+A pop-art photo booth that runs in your browser. Strike a pose, get a 3-2-1 countdown, and walk away with a printed-style photo strip, complete with an "Admit One" ticket stub.
 
 Everything happens on your device: photos are never uploaded, and there is no account or backend.
 
 ## Features
 
-- **Retro dossier look**: a kraft-paper desk, a classified file, stamps, tickets and typewriter type, with plenty of motion. Props drop onto the desk and drift with your cursor, text types itself out, stamps slam down, and the strip feeds out of the printer and develops.
+- **Pop-art look**: peach and lavender grounds, chunky condensed type, black block buttons and hand-drawn psychedelic illustrations. Everything moves: a camera-lens sun with spinning rays, drifting clouds, bobbing planets, winged polaroids flapping across the sky, a spinning "Strike a pose" badge, sections that rise in as you scroll, and a strip that feeds out of the printer and develops.
 - **Four layouts**: classic 4-shot strip, 3-shot trio, 2×2 grid and a single polaroid.
 - **Shoot**: a vintage camera viewfinder, 3-2-1 countdown, flash and shutter sounds (with a mute toggle), retake any single shot, or upload photos if there is no camera.
 - **Face-tracked props**: heart shades, star shades, cat ears, flower crown, party hat, big bow, blush and a moustache. They follow your face live (position, size and head tilt) for up to 4 faces, and are baked into each shot. Tracking runs entirely on the device with MediaPipe FaceLandmarker; the 13 MB runtime only loads when you switch a prop on.
 - **Decorate**:
-  - 40 original stickers in 4 packs (tickets, stamps and seals, study mood, cute bits), each with a die-cut white border
+  - 48 original stickers in 5 packs (pop, tickets, stamps and seals, study mood, cute bits), each with a die-cut white border
   - Drag, resize, rotate, flip, copy, layer and delete stickers; two-finger pinch on phones
-  - 12 frames: dossier, kraft, blue, lilac and peach gingham, cherries, bows, leopard, kisses, plaid, film strip and noir
+  - 14 frames: pop peach, cosmic, dossier, kraft, blue, lilac and peach gingham, cherries, bows, leopard, kisses, plaid, film strip and noir
   - 6 filters, written as pixel maths so they work on iPhone Safari
   - Captions in serif, typewriter or handwritten fonts
   - Undo and redo (Ctrl+Z, Ctrl+Shift+Z)
@@ -42,6 +42,7 @@ src/
   decorate/  stickers (SVG), frames, filters, Konva canvas
   face/      face tracker loader, prop artwork, landmark anchoring + smoothing
   export/    strip renderer (frame + filtered photos + ticket stub)
+  art/       landing illustrations (inline SVG + CSS animation)
   store/     Zustand session store
 ```
 

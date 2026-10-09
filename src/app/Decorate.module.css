@@ -22,9 +22,9 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 2px solid var(--paper);
-  background: transparent;
-  color: var(--paper);
+  border: var(--line);
+  background: var(--cream);
+  color: var(--ink);
   font-size: 1.3rem;
   cursor: pointer;
 }
@@ -57,11 +57,8 @@
   justify-content: center;
   padding: 14px 0;
   border-radius: 10px;
-  background:
-    repeating-linear-gradient(0deg, rgba(244, 236, 216, 0.08) 0 1px, transparent 1px 28px),
-    repeating-linear-gradient(90deg, rgba(244, 236, 216, 0.08) 0 1px, transparent 1px 28px),
-    #3f5a4c;
-  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25), var(--lift);
+  background: radial-gradient(circle, rgba(20, 20, 20, 0.18) 1.5px, transparent 2px) 0 0 / 22px 22px, var(--lavender);
+  border: var(--line);
   /* Vertical scrolling stays native; pinch is handled by the canvas. */
   touch-action: pan-y;
   overscroll-behavior: contain;
@@ -72,8 +69,9 @@
 }
 
 .loading {
-  color: var(--paper);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
   margin: 60px 0;
   animation: pulse 1.2s ease-in-out infinite;
 }
@@ -94,9 +92,9 @@
   gap: 6px;
   padding: 8px;
   border: var(--line);
-  border-radius: 8px;
-  background: var(--paper);
-  box-shadow: var(--drop);
+  border-radius: 12px;
+  background: var(--cream);
+  box-shadow: 4px 4px 0 var(--ink);
   animation: rise 0.25s ease-out both;
   z-index: 2;
 }
@@ -112,41 +110,43 @@
   min-height: 40px;
   min-width: 40px;
   padding: 4px 10px;
-  border: 2px solid var(--ink);
-  border-radius: 4px;
-  background: #fffaf0;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.8rem;
+  border: var(--line);
+  border-radius: 8px;
+  background: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
 .selbar .danger {
   background: var(--red);
-  color: var(--paper);
+  color: #fff;
 }
 
 .drawer {
-  border-radius: 6px;
+  border-radius: 14px;
   padding: 0 0 12px;
+  background: var(--cream);
   overflow: hidden;
 }
 
 .tabs {
   display: flex;
   border-bottom: var(--line);
-  background: var(--paper-aged);
+  background: var(--peach);
 }
 
 .tab {
   flex: 1;
   min-height: 48px;
   border: none;
-  border-right: 1px solid rgba(43, 37, 34, 0.3);
+  border-right: var(--line);
   background: transparent;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.78rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
@@ -158,8 +158,8 @@
 }
 
 .tab[aria-selected='true'] {
-  background: var(--red);
-  color: var(--paper);
+  background: var(--ink);
+  color: #fff;
 }
 
 .panel {
@@ -180,18 +180,19 @@
   flex: none;
   min-height: 38px;
   padding: 6px 14px;
-  border: 2px solid var(--ink);
+  border: var(--line);
   border-radius: 999px;
   background: transparent;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.8rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
   cursor: pointer;
 }
 
 .chip[aria-pressed='true'] {
   background: var(--ink);
-  color: var(--paper);
+  color: #fff;
 }
 
 .stickerGrid {
@@ -205,9 +206,9 @@
   display: grid;
   place-items: center;
   padding: 8px;
-  border: 1.5px dashed rgba(43, 37, 34, 0.35);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.35);
+  border: var(--line);
+  border-radius: 10px;
+  background: #fff;
   cursor: pointer;
   animation: rise 0.3s ease-out both;
   transition: transform 0.15s ease;
@@ -215,7 +216,7 @@
 
 .sticker img {
   max-height: 100%;
-  filter: drop-shadow(2px 3px 0 rgba(43, 37, 34, 0.25));
+  filter: drop-shadow(2px 3px 0 rgba(20, 20, 20, 0.2));
 }
 
 @media (hover: hover) {
@@ -243,7 +244,7 @@
   border: 2px solid transparent;
   border-radius: 8px;
   background: transparent;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.74rem;
   cursor: pointer;
@@ -259,7 +260,7 @@
   aspect-ratio: 3 / 4;
   border: 2px solid var(--ink);
   border-radius: 4px;
-  box-shadow: 3px 3px 0 rgba(43, 37, 34, 0.3);
+  box-shadow: 3px 3px 0 var(--ink);
   transition: transform 0.2s ease;
 }
 
@@ -281,7 +282,7 @@
   border: 2px solid transparent;
   border-radius: 6px;
   background: transparent;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.75rem;
   cursor: pointer;
@@ -295,7 +296,7 @@
 }
 
 .filter[aria-pressed='true'] {
-  border-color: var(--red);
+  border-color: var(--ink);
   background: rgba(255, 255, 255, 0.45);
 }
 
@@ -311,7 +312,7 @@
   border: var(--line);
   border-radius: 4px;
   background: #fffaf0;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: 1rem;
 }
 

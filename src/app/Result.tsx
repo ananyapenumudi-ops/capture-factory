@@ -4,7 +4,7 @@ import { seeded } from '../decorate/frames'
 import { useSession } from '../store/session'
 import styles from './Result.module.css'
 
-const CONFETTI_COLORS = ['#C8282E', '#F4ECD8', '#D9A441', '#E9A3B0', '#3B4F8F', '#9DAE8E']
+const CONFETTI_COLORS = ['#FF6B2C', '#FFC83D', '#F49AD6', '#4D4DF0', '#8E5CF0', '#2F9E7E']
 
 /** Little paper scraps that burst out when the strip lands. */
 function Confetti() {
@@ -66,7 +66,7 @@ export function Result() {
     return (
       <div className={styles.result}>
         <p className={styles.empty}>Nothing in the tray yet.</p>
-        <button className="btn btn-red" onClick={() => go('decorate')}>
+        <button className="btn btn-hot" onClick={() => go('decorate')}>
           Back to decorating
         </button>
       </div>
@@ -98,20 +98,20 @@ export function Result() {
         </p>
         <div className={styles.row}>
           {canShare && (
-            <button className="btn btn-dark" onClick={share}>
+            <button className="btn" onClick={share}>
               Share / save
             </button>
           )}
-          <a className="btn btn-red" href={print.url} download={filename}>
+          <a className="btn btn-hot" href={print.url} download={filename}>
             Download PNG
           </a>
         </div>
         <div className={styles.row}>
-          <button className="btn btn-small" onClick={() => go('decorate')}>
+          <button className="btn btn-outline btn-small" onClick={() => go('decorate')}>
             ← Keep decorating
           </button>
           <button
-            className="btn btn-small"
+            className="btn btn-outline btn-small"
             onClick={() => {
               newSession()
               go('setup')

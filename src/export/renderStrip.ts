@@ -4,14 +4,13 @@ import { getFrame, seeded, type FrameId, type TicketTheme } from '../decorate/fr
 import type { Shot } from '../store/session'
 
 const INK = '#2B2522'
-const DISPLAY = 'Playfair Display'
+const DISPLAY = 'Oswald'
 const MONO = 'Courier Prime'
 
 async function loadFonts() {
   try {
     await Promise.all([
-      document.fonts.load(`900 80px "${DISPLAY}"`),
-      document.fonts.load(`italic 700 40px "${DISPLAY}"`),
+      document.fonts.load(`700 80px "${DISPLAY}"`),
       document.fonts.load(`700 40px "${MONO}"`),
     ])
   } catch {
@@ -75,7 +74,7 @@ function drawTicket(ctx: CanvasRenderingContext2D, r: Rect, serial: string, date
   ctx.font = `700 ${Math.round(h * 0.1)}px "${MONO}", monospace`
   ctx.fillText('★ CAPTURE FACTORY ★', bodyCx, y + h * 0.28)
 
-  ctx.font = `900 ${Math.round(h * 0.3)}px "${DISPLAY}", Georgia, serif`
+  ctx.font = `700 ${Math.round(h * 0.34)}px "${DISPLAY}", Impact, sans-serif`
   ctx.fillText('ADMIT ONE', bodyCx, y + h * 0.65, stubX - x - notch * 2 - 40)
 
   ctx.font = `700 ${Math.round(h * 0.085)}px "${MONO}", monospace`
